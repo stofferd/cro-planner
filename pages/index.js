@@ -3,6 +3,7 @@ import Page from '../components/Page';
 import Goal from '../components/Goal';
 import styled from 'styled-components';
 import StyledCard from '../styles/StyledCard';
+import ExperimentList from '../components/ExperimentList';
 
 const Container = styled.div`
     max-width: 800px;
@@ -17,8 +18,7 @@ const index = () => {
                     <Goal />
                 </StyledCard>
                 
-                <div>Experiments</div>
-
+                <ExperimentList />
 
             </Container>
         </Page>

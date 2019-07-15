@@ -71,4 +71,5 @@ class Goal extends Component {
     }
 }
 
+
 export default Goal;
