@@ -1,13 +1,24 @@
 
 import FormInput from './FormInput';
+import Toggle from './Toggle';
 import styled from 'styled-components';
+
 
 const Tabs = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    cursor: pointer;
+    text-align: center;
+    /* border-bottom: 1px solid #dadada; */
+    padding-bottom: 0;
+    h3 {
+        margin: 0;
+        border-bottom: 1px solid #dadada;
+
+    }
     .selected {
         border-bottom: 5px solid ${props => props.theme.orange};
-
+        color: ${props => props.theme.orange};
     }
     .form-area {
         display: none;
@@ -30,7 +41,11 @@ import React, { Component } from 'react';
 class ExperimentForm extends Component {
 
     state = {
-        view: "Validity"
+        view: "Validity",
+        fold: false, // get from storage
+        fiveSecs: false,
+        addingRemoving: false,
+        userMotivation: false,
     }
 
     setView = (view) => {
@@ -50,7 +65,7 @@ class ExperimentForm extends Component {
                 </Tabs>
 
                 <FormArea className={this.state.view === 'Validity' ? 'visible ' : ''}>
-                    Validity stuff
+                    <Toggle name="fold" label="Is your experiment above the fold?" />
                 </FormArea>
 
                 <FormArea className={this.state.view === 'Evidence' ? 'visible ' : ''}>

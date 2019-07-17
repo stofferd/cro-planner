@@ -7,18 +7,20 @@ class ExperimentAddNewButton extends Component {
 
     handleClick = () => {
 
+        // 1. add new experiment to react context
         const id = '_' + Math.random().toString(36).substr(2, 9);
         const name = "New Experiment";
 
         this.addExperiment(id, name);
 
-        // get local storage
+        // 2. add new experiment to local storage
         const experimentArray = window.localStorage.getItem('experiments') ?  JSON.parse(window.localStorage.getItem('experiments')): [];
 
-            experimentArray.unshift({
-                id,
-                name
-            });
+        experimentArray.unshift({
+            id,
+            name,
+            score: 0
+        });
         
         window.localStorage.setItem('experiments', JSON.stringify(experimentArray));
 

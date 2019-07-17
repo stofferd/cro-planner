@@ -23,7 +23,7 @@ class ExperimentsProvider extends Component {
 
     addExperiment = (id, name) => {
         const experiments = this.state.experiments;
-        experiments.unshift({id, name})
+        experiments.unshift({id, name, score: 0})
         this.setState({
             experiments
         })

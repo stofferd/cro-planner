@@ -21,7 +21,7 @@ class ExperimentList extends Component {
             <ExperimentsConsumer>
                 {({experiments}) =>{
                     return(<>
-                        <ExperimentAddNewButton/>
+                        Experiments <ExperimentAddNewButton/>
                         {experiments.map((experiment, i) => {
                             const expanded = experiment.id === this.state.expandedExperiment;
                             console.log(experiment);
