@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import StyledCard from '../styles/StyledCard';
 import ExperimentList from '../components/ExperimentList';
 
+
+
 const Container = styled.div`
     max-width: 800px;
     margin: auto;
@@ -13,14 +15,16 @@ const Container = styled.div`
 const index = () => {
     return (
         <Page title="Home">
-            <Container>
-                <StyledCard>
-                    <Goal />
-                </StyledCard>
-                
-                <ExperimentList />
+        
+                <Container>
+                    <StyledCard>
+                        <Goal />
+                    </StyledCard>
+                    
+                    <ExperimentList />
 
-            </Container>
+                </Container>
+            
         </Page>
     );
 };

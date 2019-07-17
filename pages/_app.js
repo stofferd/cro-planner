@@ -1,8 +1,6 @@
 import App, { Container } from 'next/app';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
-
-import withData from '../lib/withData';
+import GoalProvider from '../components/GoalProvider'
+import ExperimentsProvider from '../components/ExperimentsProvider'
 
 class MyApp extends App {
     static async getInitialProps({ Component, ctx }) {
@@ -22,14 +20,14 @@ class MyApp extends App {
 
         return (
             <Container>
-                <ApolloProvider client={apollo}>
-                    <ApolloHooksProvider client={apollo}>
+                <GoalProvider>
+                    <ExperimentsProvider>
                         <Component {...pageProps} />
-                    </ApolloHooksProvider>
-                </ApolloProvider>
+                    </ExperimentsProvider>
+                </GoalProvider>
             </Container>
         )
     }
 }
-export default withData(MyApp);
-// export default MyApp;
+// export default withData(MyApp);
+export default MyApp;

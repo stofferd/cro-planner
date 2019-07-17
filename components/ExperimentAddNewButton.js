@@ -1,45 +1,39 @@
 import React, { Component } from 'react';
-import { LOCAL_EXPERIMENT_QUERY } from './ExperimentList';
-import { Query } from 'react-apollo'
+import {ExperimentsConsumer} from './ExperimentsProvider';
 
 class ExperimentAddNewButton extends Component {
 
-    client = null;
-    data = null;
+    addExperiment = null;
 
     handleClick = () => {
-        console.log(this.client);
-        console.log(this.data);
 
-        if (this.client) {
+        const id = '_' + Math.random().toString(36).substr(2, 9);
+        const name = "New Experiment";
 
-            const experiments = this.data.experiments ? this.data.experiments : [];
-            experiments.unshift({
-                __typename: "Experiment",
-                id: '_' + Math.random().toString(36).substr(2, 9),
-                name: 'New experiment'
-            }) 
+        this.addExperiment(id, name);
 
-            this.client.writeData({
-                data: {
-                    experiments
-                }
-            })
+        // get local storage
+        const experimentArray = window.localStorage.getItem('experiments') ?  JSON.parse(window.localStorage.getItem('experiments')): [];
 
-        }
+            experimentArray.unshift({
+                id,
+                name
+            });
+        
+        window.localStorage.setItem('experiments', JSON.stringify(experimentArray));
+
     }
 
     render() {
         return (
-            <Query query={LOCAL_EXPERIMENT_QUERY}>
-                {({data, client}) => {
-                    // console.log(data);
-                    
-                    this.client = client;
-                    this.data = data;
-                    return <button onClick={this.handleClick}>Add new experiment</button>
+            <ExperimentsConsumer>
+                {({addExperiment})=>{
+                    this.addExperiment = addExperiment;
+                    return(
+                        <button onClick={this.handleClick}>Add new experiment</button>
+                    )
                 }}
-            </Query>
+            </ExperimentsConsumer>
         );
     }
 }
