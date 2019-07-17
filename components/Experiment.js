@@ -1,14 +1,16 @@
 // import React, { Component } from 'react';
 import React from 'react';
-import FormInput from './FormInput';
 import StyledCard from '../styles/StyledCard';
+import ExperimentForm from './ExperimentForm';
 
-
-const Experiment = ({experiment: {id, name}}) => {
+const Experiment = ({experiment: {id, name}, handleClick, expanded}) => {
+    const experimentForm = expanded ?  <ExperimentForm /> : null;
     return (
-        <StyledCard>
-            <p>{id}</p>
-            <p>{name}</p>
+        <StyledCard onClick={()=>handleClick(id)}>
+            <div>
+              {name} 0
+            </div>
+            {experimentForm}
         </StyledCard>
     );
 };

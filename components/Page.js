@@ -5,6 +5,7 @@ import styled, { ThemeProvider, injectGlobal} from 'styled-components';
 
 const theme = {
     green: '#009955',
+    orange: '#FF9900',
     shadow1: 'box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)',
     greyLight: '#FAFAFA'
 };

@@ -5,6 +5,17 @@ import ExperimentAddNewButton from './ExperimentAddNewButton';
 import {ExperimentsConsumer} from './ExperimentsProvider';
 
 class ExperimentList extends Component {
+
+    state = {
+        expandedExperiment: null
+    }
+
+    handleClick= (id) => {
+        this.setState({
+            expandedExperiment: id
+        })
+    }
+
     render() {
         return (
             <ExperimentsConsumer>
@@ -12,9 +23,10 @@ class ExperimentList extends Component {
                     return(<>
                         <ExperimentAddNewButton/>
                         {experiments.map((experiment, i) => {
+                            const expanded = experiment.id === this.state.expandedExperiment;
                             console.log(experiment);
                             
-                            return <Experiment key={i} experiment={experiment}/>
+                            return <Experiment expanded={expanded} key={i} handleClick={this.handleClick} experiment={experiment}/>
                         })}
                     </>)
                 }}
