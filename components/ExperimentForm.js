@@ -1,8 +1,8 @@
-
 import FormInput from './FormInput';
 import Toggle from './Toggle';
 import styled from 'styled-components';
-
+import { ExperimentsContext } from './ExperimentsProvider';
+import { validityObj, evidenceObj, effortObj } from '../data/questions';
 
 const Tabs = styled.div`
     display: grid;
@@ -14,7 +14,6 @@ const Tabs = styled.div`
     h3 {
         margin: 0;
         border-bottom: 1px solid #dadada;
-
     }
     .selected {
         border-bottom: 5px solid ${props => props.theme.orange};
@@ -33,52 +32,109 @@ const FormArea = styled.div`
     &.visible {
         display: block;
     }
-
 `;
 
 import React, { Component } from 'react';
 
-class ExperimentForm extends Component {
+const ExperimentForm = ({ id }) => {
+    const [view, setView] = React.useState('Validity');
+    const [validity, setValidity] = React.useState(validityObj);
+    const [evidence, setEvidence] = React.useState(evidenceObj);
+    const [effort, setEffort] = React.useState(effortObj);
 
-    state = {
-        view: "Validity",
-        fold: false, // get from storage
-        fiveSecs: false,
-        addingRemoving: false,
-        userMotivation: false,
-    }
+    const { updateExperiment } = React.useContext(ExperimentsContext);
 
-    setView = (view) => {
-        this.setState({
-            view
-        })
-    }
+    // update scores
+    React.useEffect(() => {
+        let newScore = 0;
+        for (let [key, val] of Object.entries(validity)) {
+            if (val.toggled === true) newScore += val.vals[1];
+        }
+        for (let [key, val] of Object.entries(evidence)) {
+            if (val.toggled === true) newScore += val.vals[1];
+        }
+        updateExperiment(id, null, newScore);
+    }, [validity, evidence, effort]);
 
-    render() {
+    const handleSetValidity = name => {
+        const newValidity = {
+            ...validity,
+        };
+        newValidity[name].toggled = !validity[name].toggled;
+        setValidity({ ...newValidity });
+    };
+    const handleSetEvidence = name => {
+        const newEvidence = {
+            ...evidence,
+        };
+        newEvidence[name].toggled = !evidence[name].toggled;
+        setEvidence({ ...newEvidence });
+    };
 
-        return (
-            <div>
-                <Tabs>
-                    <h3 className={this.state.view === 'Validity' ? 'selected' : ''} onClick={() => this.setView('Validity')}>Validity</h3>
-                    <h3 className={this.state.view === 'Evidence' ? 'selected' : ''} onClick={() => this.setView('Evidence')}>Evidence</h3>
-                    <h3 className={this.state.view === 'Effort' ? 'selected' : ''} onClick={() => this.setView('Effort')}>Effort</h3>
-                </Tabs>
-
-                <FormArea className={this.state.view === 'Validity' ? 'visible ' : ''}>
-                    <Toggle name="fold" label="Is your experiment above the fold?" />
-                </FormArea>
-
-                <FormArea className={this.state.view === 'Evidence' ? 'visible ' : ''}>
-                    Evidence stuff
-                </FormArea>
-
-                <FormArea className={this.state.view === 'Effort' ? 'visible ' : ''}>
-                    Effort stuff
-                </FormArea>
-
-            </div>
+    // construct form toggles - validity
+    let validityOptions = [];
+    for (let [key, val] of Object.entries(validity)) {
+        validityOptions.push(
+            <Toggle
+                key={key}
+                name={key}
+                label={val.text}
+                onChange={handleSetValidity}
+                toggled={val.toggled}
+            />,
         );
     }
-}
+
+    // construct form toggles - evidence
+    let evidenceOptions = [];
+    for (let [key, val] of Object.entries(evidence)) {
+        evidenceOptions.push(
+            <Toggle
+                key={key}
+                name={key}
+                label={val.text}
+                onChange={handleSetEvidence}
+                toggled={val.toggled}
+            />,
+        );
+    }
+
+    return (
+        <div>
+            <Tabs>
+                <h3
+                    className={view === 'Validity' ? 'selected' : ''}
+                    onClick={() => setView('Validity')}
+                >
+                    Validity
+                </h3>
+                <h3
+                    className={view === 'Evidence' ? 'selected' : ''}
+                    onClick={() => setView('Evidence')}
+                >
+                    Evidence
+                </h3>
+                <h3
+                    className={view === 'Effort' ? 'selected' : ''}
+                    onClick={() => setView('Effort')}
+                >
+                    Effort
+                </h3>
+            </Tabs>
+
+            <FormArea className={view === 'Validity' ? 'visible ' : ''}>
+                {validityOptions}
+            </FormArea>
+
+            <FormArea className={view === 'Evidence' ? 'visible ' : ''}>
+                {evidenceOptions}
+            </FormArea>
+
+            <FormArea className={view === 'Effort' ? 'visible ' : ''}>
+                Effort stuff
+            </FormArea>
+        </div>
+    );
+};
 
 export default ExperimentForm;

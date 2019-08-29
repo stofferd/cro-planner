@@ -47,7 +47,7 @@ class Goal extends Component {
                 {(goalConsumerData) => {
                     this.goalConsumerData = goalConsumerData;
                     const {name, sessions, conversions, conversionValue} = goalConsumerData;
-                    console.log(this.goalConsumerData);
+                    // console.log(this.goalConsumerData);
                     
                     return (
                         <>
