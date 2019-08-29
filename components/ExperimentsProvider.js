@@ -29,11 +29,24 @@ class ExperimentsProvider extends Component {
         })
     }
 
+    deleteExperiment = (id) => {
+        const experimentsInitial = this.state.experiments ? this.state.experiments: [];
+        const experiments = experimentsInitial.filter(exp => {
+            return exp.id !== id;
+        });
+
+        this.setState({
+            experiments
+        })
+        window.localStorage.setItem('experiments', JSON.stringify(experiments));
+    }
+
     render () {
         return (
             <ExperimentsContext.Provider value={{ 
                 experiments: this.state.experiments, 
-                addExperiment: this.addExperiment
+                addExperiment: this.addExperiment,
+                deleteExperiment: this.deleteExperiment
             }} >
                 {this.props.children}
             </ExperimentsContext.Provider>

@@ -4,6 +4,7 @@ import StyledCard from '../styles/StyledCard';
 import ExperimentForm from './ExperimentForm';
 import styled from 'styled-components';
 import FormInput from './FormInput';
+import ExperimentDeleteButton from './ExperimentDeleteButton';
 
 const Summary = styled.div`
     display: grid;
@@ -32,6 +33,7 @@ const Experiment = ({experiment: {id, name, score}, handleClick, expanded}) => {
     const [experimentName, setName] = useState(name);
 
     const experimentForm = expanded ?  <ExperimentForm /> : null;
+    const options = expanded ? <div><ExperimentDeleteButton id={id} /></div> : null;
     return (
         <StyledCard onClick={()=>handleClick(id)}>
             <Summary>
@@ -42,6 +44,7 @@ const Experiment = ({experiment: {id, name, score}, handleClick, expanded}) => {
                 }} name="name" niceName="" placeholder={'Add a hyopthesis to test'} value={experimentName} />  {score}
             </Summary>
             {experimentForm}
+            {options}
         </StyledCard>
     );
 };
