@@ -64,7 +64,7 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
         console.log({ name });
         console.log({ value });
 
-        updateExperiment(id, { name: { value } });
+        updateExperiment(id, { validity: { [name]: { value } } });
     };
     const handleSetEvidence = name => {
         // const newEvidence = {

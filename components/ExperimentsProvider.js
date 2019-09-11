@@ -45,8 +45,13 @@ class ExperimentsProvider extends Component {
     // 2. Add experiments
 
     addExperiment = () => {
-        const id = '';
-        const name = 'New experiments';
+        const id =
+            '_' +
+            Math.random()
+                .toString(36)
+                .substr(2, 9);
+        const name = 'New Experiment';
+
         const experiments = this.state.experiments;
         experiments.unshift({
             id,
