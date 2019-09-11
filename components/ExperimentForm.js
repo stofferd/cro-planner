@@ -1,8 +1,10 @@
+import React from 'react';
+import styled from 'styled-components';
+
 import FormInput from './FormInput';
 import Toggle from './Toggle';
-import styled from 'styled-components';
 import { ExperimentsContext } from './ExperimentsProvider';
-import { validityObj, evidenceObj, effortObj } from '../data/questions';
+// import { validityObj, evidenceObj, effortObj } from '../data/questions';
 
 const Tabs = styled.div`
     display: grid;
@@ -34,67 +36,74 @@ const FormArea = styled.div`
     }
 `;
 
-import React, { Component } from 'react';
+const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
+    // console.log({ validityObj });
 
-const ExperimentForm = ({ id }) => {
     const [view, setView] = React.useState('Validity');
-    const [validity, setValidity] = React.useState(validityObj);
-    const [evidence, setEvidence] = React.useState(evidenceObj);
-    const [effort, setEffort] = React.useState(effortObj);
-
     const { updateExperiment } = React.useContext(ExperimentsContext);
 
     // update scores
-    React.useEffect(() => {
-        let newScore = 0;
-        for (let [key, val] of Object.entries(validity)) {
-            if (val.toggled === true) newScore += val.vals[1];
-        }
-        for (let [key, val] of Object.entries(evidence)) {
-            if (val.toggled === true) newScore += val.vals[1];
-        }
-        updateExperiment(id, null, newScore);
-    }, [validity, evidence, effort]);
+    // React.useEffect(() => {
+    //     let newScore = 0;
+    //     for (let [key, val] of Object.entries(validity)) {
+    //         if (val.toggled === true) newScore += val.vals[1];
+    //     }
+    //     for (let [key, val] of Object.entries(evidence)) {
+    //         if (val.toggled === true) newScore += val.vals[1];
+    //     }
+    //     updateExperiment(id, null, newScore);
+    // }, [validity, evidence, effort]);
 
-    const handleSetValidity = name => {
-        const newValidity = {
-            ...validity,
-        };
-        newValidity[name].toggled = !validity[name].toggled;
-        setValidity({ ...newValidity });
+    const handleSetValidity = (name, value) => {
+        // const newValidity = {
+        //     ...validity,
+        // };
+        // newValidity[name].toggled = !validity[name].toggled;
+        // setValidity({ ...newValidity });
+
+        console.log({ name });
+        console.log({ value });
+
+        updateExperiment(id, { name: { value } });
     };
     const handleSetEvidence = name => {
-        const newEvidence = {
-            ...evidence,
-        };
-        newEvidence[name].toggled = !evidence[name].toggled;
-        setEvidence({ ...newEvidence });
+        // const newEvidence = {
+        //     ...evidence,
+        // };
+        // newEvidence[name].toggled = !evidence[name].toggled;
+        // setEvidence({ ...newEvidence });
     };
 
     // construct form toggles - validity
     let validityOptions = [];
-    for (let [key, val] of Object.entries(validity)) {
+    for (let [key, obj] of Object.entries(validity)) {
+        // console.log({ key });
+
+        // console.log({ obj });
+
         validityOptions.push(
             <Toggle
                 key={key}
                 name={key}
-                label={val.text}
+                label={obj.text}
                 onChange={handleSetValidity}
-                toggled={val.toggled}
+                value={obj.value}
+                vals={obj.vals}
             />,
         );
     }
 
     // construct form toggles - evidence
     let evidenceOptions = [];
-    for (let [key, val] of Object.entries(evidence)) {
+    for (let [key, obj] of Object.entries(evidence)) {
         evidenceOptions.push(
             <Toggle
                 key={key}
                 name={key}
-                label={val.text}
+                label={obj.text}
                 onChange={handleSetEvidence}
-                toggled={val.toggled}
+                value={obj.value}
+                vals={obj.vals}
             />,
         );
     }

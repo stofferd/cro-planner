@@ -28,7 +28,7 @@ const updateLocalStorage = (id, newName) => {
 };
 
 const Experiment = ({
-    experiment: { id, name, score },
+    experiment: { effort, evidence, id, name, score, validity },
     handleClick,
     expanded,
 }) => {
@@ -52,7 +52,12 @@ const Experiment = ({
             </Summary>
             {expanded && (
                 <>
-                    <ExperimentForm id={id} />{' '}
+                    <ExperimentForm
+                        effort={effort}
+                        evidence={evidence}
+                        id={id}
+                        validity={validity}
+                    />
                     <div>
                         <ExperimentDeleteButton id={id} />
                     </div>

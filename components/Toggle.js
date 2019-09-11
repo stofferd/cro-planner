@@ -24,17 +24,17 @@ const StyledToggle = styled.div`
     }
 `;
 
-const Toggle = ({ name, label, onChange, toggled }) => {
+const Toggle = ({ name, label, onChange, value, vals }) => {
     // console.log({name});
-
-    const toggleClass = toggled ? 'true' : 'false';
+    // const [value,setValue] = React.useState(toggled);
+    const toggleClass = value ? 'true' : 'false';
     return (
         <div>
             <p>{label}</p>
             <StyledToggle
                 className={toggleClass}
                 onClick={() => {
-                    onChange(name);
+                    onChange(name, value ? vals[0] : vals[1]);
                 }}
             >
                 <div className="yes">Yes</div>
