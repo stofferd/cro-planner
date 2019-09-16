@@ -71,12 +71,13 @@ export const evidenceObj = {
 // Effort:
 export const effortObj = {
     testing: {
-        text:
-            'How difficult will this idea be to test? (High, Medium, Low, No dev)?',
+        labels: ['High', 'Medium', 'Low', 'No dev'],
+        text: 'How difficult will this idea be to test?',
         vals: [0, 1, 2, 3],
         value: 0,
     },
-    fiveSecs: {
+    deployment: {
+        labels: ['High', 'Medium', 'Low', 'No dev'],
         text: 'How difficult will this idea be to deploy to live?',
         vals: [0, 1, 2, 3],
         value: 0,

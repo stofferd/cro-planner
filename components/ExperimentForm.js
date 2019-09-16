@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import FormInput from './FormInput';
 import Toggle from './Toggle';
+import Radio from './Radio';
 import { ExperimentsContext } from './ExperimentsProvider';
 // import { validityObj, evidenceObj, effortObj } from '../data/questions';
 
@@ -41,46 +42,19 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
 
     const [view, setView] = React.useState('Validity');
     const { updateExperiment } = React.useContext(ExperimentsContext);
-
-    // update scores
-    // React.useEffect(() => {
-    //     let newScore = 0;
-    //     for (let [key, val] of Object.entries(validity)) {
-    //         if (val.toggled === true) newScore += val.vals[1];
-    //     }
-    //     for (let [key, val] of Object.entries(evidence)) {
-    //         if (val.toggled === true) newScore += val.vals[1];
-    //     }
-    //     updateExperiment(id, null, newScore);
-    // }, [validity, evidence, effort]);
-
     const handleSetValidity = (name, value) => {
-        // const newValidity = {
-        //     ...validity,
-        // };
-        // newValidity[name].toggled = !validity[name].toggled;
-        // setValidity({ ...newValidity });
-
-        console.log({ name });
-        console.log({ value });
-
-        updateExperiment(id, { validity: { [name]: { value } } });
+        updateExperiment(id, 'validity', name, 'value', value, true);
     };
-    const handleSetEvidence = name => {
-        // const newEvidence = {
-        //     ...evidence,
-        // };
-        // newEvidence[name].toggled = !evidence[name].toggled;
-        // setEvidence({ ...newEvidence });
+    const handleSetEvidence = (name, value) => {
+        updateExperiment(id, 'evidence', name, 'value', value, true);
+    };
+    const handleSetEffort = (name, value) => {
+        updateExperiment(id, 'effort', name, 'value', value, true);
     };
 
     // construct form toggles - validity
     let validityOptions = [];
     for (let [key, obj] of Object.entries(validity)) {
-        // console.log({ key });
-
-        // console.log({ obj });
-
         validityOptions.push(
             <Toggle
                 key={key}
@@ -102,6 +76,24 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
                 name={key}
                 label={obj.text}
                 onChange={handleSetEvidence}
+                value={obj.value}
+                vals={obj.vals}
+            />,
+        );
+    }
+
+    // construct form toggles - effort
+    let effortOptions = [];
+    for (let [key, obj] of Object.entries(effort)) {
+        // console.log({ obj });
+
+        effortOptions.push(
+            <Radio
+                key={key}
+                name={key}
+                label={obj.text}
+                onChange={handleSetEffort}
+                radioLabels={obj.labels}
                 value={obj.value}
                 vals={obj.vals}
             />,
@@ -140,7 +132,7 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
             </FormArea>
 
             <FormArea className={view === 'Effort' ? 'visible ' : ''}>
-                Effort stuff
+                {effortOptions}
             </FormArea>
         </div>
     );

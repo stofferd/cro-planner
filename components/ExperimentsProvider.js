@@ -5,25 +5,6 @@ import { validityObj, evidenceObj, effortObj } from '../data/questions';
 /* First we will make a new context */
 export const ExperimentsContext = React.createContext();
 
-// these object represent the data structure for each experiment
-// const validity = {};
-// for (const [key, value] of Object.entries(validityObj)) {
-//     console.log(key, value);
-//     validity[key] = +validityObj[key].toggled; // convert false to 0
-// }
-
-// const evidence = {};
-// for (const [key, value] of Object.entries(evidenceObj)) {
-//     console.log(key, value);
-//     evidence[key] = +evidenceObj[key].toggled; // convert false to 0
-// }
-
-// const effort = {};
-// for (const [key, value] of Object.entries(effortObj)) {
-//     console.log(key, value);
-//     effort[key] = +effortObj[key].toggled; // convert false to 0
-// }
-
 class ExperimentsProvider extends Component {
     // 1. initially load experiments from local storage
 
@@ -69,35 +50,39 @@ class ExperimentsProvider extends Component {
 
     // 3. Update experiments
 
-    updateExperiment = (id, args) => {
-        console.log('running');
+    updateExperiment = (id, key1, key2, key3, val, recalculate) => {
+        // get a copy of experiments from state
+        const newExperiments = [];
+        newExperiments.push(...this.state.experiments);
+        console.log({ id, key1, key2, key3, val, recalculate });
 
-        const newExperiments = [...this.state.experiments];
+        // loop through and modify by ID
         newExperiments.forEach((experiment, key) => {
-            // console.log({ keykey: newExperiments[key] });
-
             if (id === experiment.id) {
-                newExperiments[key] = {
-                    ...this.state.experiments[key],
-                    ...args,
-                };
-
-                // data: {
-                //     coolVar
-                //     ...args, // this then does th ers
-                // },
-
-                // newExperiments[key] = {};
-                // if (name) experiments[key].name = name;
-                // if (score || score === 0) experiments[key].score = score;
+                if (key3) {
+                    // nested values
+                    experiment[key1][key2][key3] = val;
+                    if (recalculate) {
+                        experiment.score = this.recalculateScore(experiment);
+                    }
+                } else if (key2) {
+                    // @TODO probably not needed...
+                    experiment[key1][key2] = val;
+                } else if (key1) {
+                    // top level things like score or name
+                    experiment[key1] = val;
+                }
             }
         });
-        console.log({ newExperiments });
-
-        // this.setState({
-        //     experiments,
-        // });
-        // window.localStorage.setItem('experiments', JSON.stringify(experiments));
+        // update state
+        this.setState({
+            newExperiments,
+        });
+        // update local storage
+        window.localStorage.setItem(
+            'experiments',
+            JSON.stringify(newExperiments),
+        );
     };
 
     // 4. Delete experiments
@@ -114,6 +99,21 @@ class ExperimentsProvider extends Component {
             experiments,
         });
         window.localStorage.setItem('experiments', JSON.stringify(experiments));
+    };
+
+    recalculateScore = ({ validity, evidence, effort }) => {
+        let newScore = 0;
+        for (let [key, item] of Object.entries(validity)) {
+            newScore += parseInt(item.value);
+        }
+        for (let [key, item] of Object.entries(evidence)) {
+            newScore += parseInt(item.value);
+        }
+        for (let [key, item] of Object.entries(effort)) {
+            newScore += parseInt(item.value);
+        }
+
+        return newScore;
     };
 
     render() {
