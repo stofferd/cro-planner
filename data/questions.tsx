@@ -69,17 +69,23 @@ export const evidenceObj = {
 };
 
 // Effort:
-export const effortObj = {
-    testing: {
-        labels: ['High', 'Medium', 'Low', 'No dev'],
-        text: 'How difficult will this idea be to test?',
-        vals: [0, 1, 2, 3],
-        value: 0,
-    },
-    deployment: {
-        labels: ['High', 'Medium', 'Low', 'No dev'],
-        text: 'How difficult will this idea be to deploy to live?',
-        vals: [0, 1, 2, 3],
-        value: 0,
-    },
-};
+export const effortObj =
+    // : {
+    //     [key: string]: {
+    //         [key: string]: string[] | string | Array<number> | number;
+    //     };
+    // }
+    {
+        testing: {
+            labels: ['High', 'Medium', 'Low', 'No dev'],
+            text: 'How difficult will this idea be to test?',
+            vals: [0, 1, 2, 3],
+            value: 0,
+        },
+        deployment: {
+            labels: ['High', 'Medium', 'Low', 'No dev'],
+            text: 'How difficult will this idea be to deploy to live?',
+            vals: [0, 1, 2, 3],
+            value: 0,
+        },
+    };

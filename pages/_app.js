@@ -1,11 +1,12 @@
 import App, { Container } from 'next/app';
-import GoalProvider from '../components/GoalProvider'
-import ExperimentsProvider from '../components/ExperimentsProvider'
+import GoalProvider from '../components/GoalProvider';
+import ExperimentsProvider from '../components/ExperimentsProvider';
+import 'rc-slider/assets/index.css';
 
 class MyApp extends App {
     static async getInitialProps({ Component, ctx }) {
         let pageProps = {};
-        if (Component.getInitialProps){
+        if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
         // this exposes query to user
@@ -15,7 +16,7 @@ class MyApp extends App {
 
     render() {
         // console.log(this.props);
-        
+
         const { Component, apollo, pageProps } = this.props;
 
         return (
@@ -26,7 +27,7 @@ class MyApp extends App {
                     </ExperimentsProvider>
                 </GoalProvider>
             </Container>
-        )
+        );
     }
 }
 // export default withData(MyApp);

@@ -5,7 +5,7 @@ type Props = {
     name: string;
     label: string;
     onChange: (name: string, value: number) => void;
-    value: 0 | 1 | 2 | 3;
+    value: number;
     vals: number[];
 };
 

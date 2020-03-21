@@ -1,10 +1,23 @@
 import React, { ReactNode } from 'react';
-import { Experiment, Validity, Evidence, Effort, Question } from './Types';
+import { Experiment, Validity, Evidence, Effort } from './Types';
 import { validityObj, evidenceObj, effortObj } from '../data/questions';
 import update from 'immutability-helper';
 
 /* First we will make a new context */
-export const ExperimentsContext = React.createContext({});
+type ExpContext = {
+    experiments?: Experiment[];
+    addExperiment?: () => void;
+    deleteExperiment?: (id: string) => void;
+    updateExperiment?: (
+        id: string,
+        key1: string,
+        key2: string,
+        key3: string,
+        val: number,
+        recalculate?: boolean,
+    ) => void;
+};
+export const ExperimentsContext = React.createContext<ExpContext>({});
 
 const ExperimentsProvider = ({ children }: { children: ReactNode }) => {
     // 1. initially load experiments from local storage
@@ -53,11 +66,8 @@ const ExperimentsProvider = ({ children }: { children: ReactNode }) => {
         key2: string,
         key3: string,
         val: number,
-        recalculate?: () => {},
+        recalculate?: boolean,
     ) => {
-        // get a copy of experiments from state
-        console.log({ id, key1, key2, key3, val, recalculate });
-
         // loop through and modify by ID
         const thisExp = [...experiments].filter((e: Experiment) => {
             return id === e.id;
@@ -86,7 +96,7 @@ const ExperimentsProvider = ({ children }: { children: ReactNode }) => {
         }
         if (!newExp) return;
         const newExperiments = update(experiments, {
-            [0]: { $set: newExp },
+            [expIndex]: { $set: newExp },
         });
 
         // update state

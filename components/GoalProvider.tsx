@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 /* First we will make a new context */
-const GoalContext = React.createContext({
+export const GoalContext = React.createContext({
     name: '',
     sessions: 0,
     conversions: 0,
     conversionValue: 0,
-    update: (name: string, type: string, val: number) => {},
+    update: (name: string, type: string, val: number | string) => {},
 });
 
 /* Then create a provider Component */
@@ -32,7 +32,7 @@ class GoalProvider extends Component {
         conversionValue: 0,
     };
 
-    update = (name: string, type: string, val: number) => {
+    update = (name: string, type: string, val: number | string) => {
         this.setState({
             [name]: val,
         });

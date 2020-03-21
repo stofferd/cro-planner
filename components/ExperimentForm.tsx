@@ -3,9 +3,17 @@ import styled from 'styled-components';
 
 import FormInput from './FormInput';
 import Toggle from './Toggle';
-import Radio from './Radio';
+import Slider from './Slider';
 import { ExperimentsContext } from './ExperimentsProvider';
-// import { validityObj, evidenceObj, effortObj } from '../data/questions';
+
+import { Effort, Evidence, Validity } from './Types';
+
+type Props = {
+    evidence?: Evidence;
+    effort?: Effort;
+    id: string;
+    validity?: Validity;
+};
 
 const Tabs = styled.div`
     display: grid;
@@ -22,39 +30,37 @@ const Tabs = styled.div`
         border-bottom: 5px solid ${props => props.theme.orange};
         color: ${props => props.theme.orange};
     }
-    .form-area {
-        display: none;
-        &.visible {
-            display: block;
-        }
-    }
 `;
 
 const FormArea = styled.div`
     display: none;
     &.visible {
-        display: block;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 `;
 
-const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
+const ExperimentForm = ({ evidence, effort, id, validity }: Props) => {
     // console.log({ validityObj });
 
     const [view, setView] = React.useState('Validity');
     const { updateExperiment } = React.useContext(ExperimentsContext);
-    const handleSetValidity = (name, value) => {
-        updateExperiment(id, 'validity', name, 'value', value, true);
+    const handleSetValidity = (name: string, value: number) => {
+        if (updateExperiment)
+            updateExperiment(id, 'validity', name, 'value', value, true);
     };
-    const handleSetEvidence = (name, value) => {
-        updateExperiment(id, 'evidence', name, 'value', value, true);
+    const handleSetEvidence = (name: string, value: number) => {
+        if (updateExperiment)
+            updateExperiment(id, 'evidence', name, 'value', value, true);
     };
-    const handleSetEffort = (name, value) => {
-        updateExperiment(id, 'effort', name, 'value', value, true);
+    const handleSetEffort = (name: string, value: number) => {
+        if (updateExperiment)
+            updateExperiment(id, 'effort', name, 'value', value, true);
     };
 
     // construct form toggles - validity
     let validityOptions = [];
-    for (let [key, obj] of Object.entries(validity)) {
+    for (let [key, obj] of Object.entries(validity || [])) {
         validityOptions.push(
             <Toggle
                 key={key}
@@ -69,7 +75,7 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
 
     // construct form toggles - evidence
     let evidenceOptions = [];
-    for (let [key, obj] of Object.entries(evidence)) {
+    for (let [key, obj] of Object.entries(evidence || [])) {
         evidenceOptions.push(
             <Toggle
                 key={key}
@@ -84,16 +90,16 @@ const ExperimentForm = ({ evidence = {}, effort = {}, id, validity = {} }) => {
 
     // construct form toggles - effort
     let effortOptions = [];
-    for (let [key, obj] of Object.entries(effort)) {
+    for (let [key, obj] of Object.entries(effort || [])) {
         // console.log({ obj });
 
         effortOptions.push(
-            <Radio
+            <Slider
                 key={key}
                 name={key}
                 label={obj.text}
                 onChange={handleSetEffort}
-                radioLabels={obj.labels}
+                radioLabels={obj.labels || []}
                 value={obj.value}
                 vals={obj.vals}
             />,

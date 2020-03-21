@@ -1,19 +1,17 @@
 import React from 'react';
-import {ExperimentsConsumer} from './ExperimentsProvider';
+import { ExperimentsContext } from './ExperimentsProvider';
 
+const ExperimentDeleteButton = ({ id }: { id: string }) => {
+    const { deleteExperiment } = React.useContext(ExperimentsContext);
 
-
-const ExperimentDeleteButton = ({id}) => {
     return (
-        <ExperimentsConsumer>
-            {({deleteExperiment})=>{
-                return(
-                    <button onClick={() => {
-                        deleteExperiment(id);
-                    }}>delete</button>
-                )
+        <button
+            onClick={() => {
+                if (deleteExperiment) deleteExperiment(id);
             }}
-        </ExperimentsConsumer>
+        >
+            delete
+        </button>
     );
 };
 
