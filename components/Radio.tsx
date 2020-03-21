@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
+type Props = {
+    name: string;
+    label: string;
+    onChange: (name: string, value: number) => void;
+    radioLabels: string[];
+    value: 0 | 1 | 2 | 3;
+    vals: number[];
+};
+
 const StyledRadio = styled.div`
-    /* background: red; */
-    /* width: 10rem; */
-    /* display: grid; */
-    /* grid-template-columns: repeat(2, 1fr); */
     text-align: center;
     color: #fff;
     button {
@@ -19,8 +24,8 @@ const StyledRadio = styled.div`
     }
 `;
 
-const Radio = ({ name, label, onChange, radioLabels, value, vals }) => {
-    const setVal = val => {
+const Radio = ({ name, label, onChange, radioLabels, value, vals }: Props) => {
+    const setVal = (val: number) => {
         // pass the button value to onChange function
         onChange(name, val);
     };

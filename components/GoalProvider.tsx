@@ -1,37 +1,44 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 /* First we will make a new context */
-const GoalContext = React.createContext()
+const GoalContext = React.createContext({
+    name: '',
+    sessions: 0,
+    conversions: 0,
+    conversionValue: 0,
+    update: (name: string, type: string, val: number) => {},
+});
 
 /* Then create a provider Component */
 class GoalProvider extends Component {
-
     componentDidMount = () => {
         if (window.localStorage.getItem('goal')) {
-            const goalDetails = JSON.parse(window.localStorage.getItem('goal'));
+            const goalDetails = JSON.parse(
+                window.localStorage.getItem('goal') as string,
+            );
             this.setState({
                 name: goalDetails.name,
                 sessions: goalDetails.sessions,
                 conversions: goalDetails.conversions,
                 conversionValue: goalDetails.conversionValue,
-            })            
-        } 
-    }
+            });
+        }
+    };
 
     state = {
         name: '',
         sessions: 0,
         conversions: 0,
         conversionValue: 0,
-    }
+    };
 
-    update = (name, type, val) => {
+    update = (name: string, type: string, val: number) => {
         this.setState({
-            [name]: val
-        })
-    }
+            [name]: val,
+        });
+    };
 
-    render () {
+    render() {
         return (
             <GoalContext.Provider
                 value={{
@@ -39,17 +46,17 @@ class GoalProvider extends Component {
                     sessions: this.state.sessions,
                     conversions: this.state.conversions,
                     conversionValue: this.state.conversionValue,
-                    update: this.update
+                    update: this.update,
                 }}
             >
                 {this.props.children}
             </GoalContext.Provider>
-        )
+        );
     }
 }
 
 /* then make a consumer which will surface it */
-const GoalConsumer = GoalContext.Consumer
+const GoalConsumer = GoalContext.Consumer;
 
-export default GoalProvider
-export { GoalConsumer }
+export default GoalProvider;
+export { GoalConsumer };

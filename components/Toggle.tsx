@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+type Props = {
+    name: string;
+    label: string;
+    onChange: (name: string, value: number) => void;
+    value: 0 | 1 | 2 | 3;
+    vals: number[];
+};
+
 const StyledToggle = styled.div`
     /* background: red; */
     width: 10rem;
@@ -24,9 +32,7 @@ const StyledToggle = styled.div`
     }
 `;
 
-const Toggle = ({ name, label, onChange, value, vals }) => {
-    // console.log({name});
-    // const [value,setValue] = React.useState(toggled);
+const Toggle = ({ name, label, onChange, value, vals }: Props) => {
     const toggleClass = value ? 'true' : 'false';
     return (
         <div>

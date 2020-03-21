@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
-import Header from './Header'
+import Header from './Header';
 import Meta from './Meta';
-import styled, { ThemeProvider, injectGlobal} from 'styled-components';
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 const theme = {
+    black: '#222',
     green: '#009955',
     orange: '#FF9900',
-    shadow1: 'box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)',
-    greyLight: '#FAFAFA'
+    shadow1:
+        'box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)',
+    greyLight: '#FAFAFA',
 };
-  
+
 const StyledPage = styled.div`
     background: white;
     color: ${props => props.theme.black};
 `;
-  
+
 const Inner = styled.div`
-    /* max-width: ${props => props.theme.maxWidth}; */
     margin: 0 auto;
-    /* padding: 2rem; */
 `;
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
     @font-face {
         font-family: 'anton';
         src: url('/static/fonts/anton-regular-webfont.woff'); 
@@ -58,25 +58,22 @@ injectGlobal`
     fieldset {
         border: 0;
     }
-    .select-box {
-        background: ${theme.blueTrans};
-        border: 1px solid ${theme.blue};
-    }
+
     img {
         max-width: 100%;
     }
 `;
 
 class Page extends Component {
-    render() {        
+    render() {
         return (
             <ThemeProvider theme={theme}>
+                <GlobalStyle />
+
                 <StyledPage>
-                    <Meta title={this.props.title} />
+                    <Meta />
                     <Header />
-                    <Inner>
-                        {this.props.children}
-                    </Inner>
+                    <Inner>{this.props.children}</Inner>
                 </StyledPage>
             </ThemeProvider>
         );
